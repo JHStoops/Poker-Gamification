@@ -1,0 +1,132 @@
+/*NAVBAR*/
+.navbar {
+  height:60px;}
+
+.navbar h1 {
+  margin: 10px 0 0 0;}
+
+#navbarLogin {
+  margin: 5px 0 5px 0;} 
+
+/*GENERAL BODY*/
+#wrapper img {
+  margin: 10px 0 10px 0;}
+
+#pokerTable {
+  height: 220px;
+  margin-top: 20px;
+  background-image: url('img/bg.jpg');}
+
+#agentOverview {
+  min-height: 875px;}
+
+.required {
+  color: red;}
+
+#noCardsMessage {
+  padding: 20px 0 20px 10px;
+  color: yellow;
+  background-image: url('img/bg.jpg');}
+
+#addEditMessage {
+  float: right;
+  height: 34px;
+  padding-top: 7px;
+  margin: 0 0 0 0;
+  display: none;}
+
+#supervisorsAgentList {
+  float: right;
+  height: 34px;}
+
+/*TUTORIAL*/
+#scoringHandsModal .modal-content {
+  min-width: 350px;}
+
+#scoringHandsModal .modal-dialog{
+    overflow-y: initial !important}
+
+#scoringHandsModal .modal-body{
+    height: 400px;
+    overflow-y: auto;}
+
+#generalTutorialModal .modal-content {
+  min-width: 350px;}
+
+#generalTutorialModal .modal-dialog{
+    overflow-y: initial !important}
+
+#generalTutorialModal .modal-body{
+    height: 400px;
+    overflow-y: auto;}
+
+/*CARDS*/
+.cardSlot {
+  height: 200px;
+  max-width: 240px;} 
+
+.slot {
+  position: absolute;
+  top: 80%;
+  left: 10%;
+  height: 20%;
+  width: 70%;
+  max-width: 190px;
+  border-bottom: 10px solid #f5f5dc;
+  border-left: 10px solid #f5f5dc;
+  border-right: 10px solid #f5f5dc;}
+  
+#agentOverview img {
+  height: 110px;
+  width: 120px;
+  margin: 0 -5px 0 -15px;}
+
+#agentOverview .card {
+  min-width: 90px;
+}
+
+.cardSlot .card {
+  position: relative;
+  left: 20%;
+  top: 10%;
+  width: 50%;
+  height: 75%;
+  max-width: 240px;
+  border: black 1px solid;
+  border-radius: 10px;
+  background: #fff;
+  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+}
+
+.card {
+  max-width: 90px;
+  height: 110px;
+  margin: 0 10px 0 0px;
+  border: black 1px solid;
+  border-radius: 10px;
+  background: #fff;
+  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);}
+
+.card p {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  font: 50px Georgia, Times New Roman, serif;}
+
+.suit-Diamonds:before {
+  content: "♦";
+  color: #ff0000;}
+ 
+.suit-Hearts:before {
+  content: "♥";
+  color: #ff0000;}
+ 
+.suit-Clubs:before {
+  content: "♣";
+  color: #000;}
+ 
+.suit-Spades:before {
+  content: "♠";
+  color: #000;}

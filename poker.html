@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <base href="Poker/" />
+    <link rel="icon" type="image/png" href="suitlogo.ico">
+    <link href="styles.css" rel="stylesheet" />
+    <link href="lib/bootstrap-3.3.6/css/bootstrap-3.3.6.min.css" rel="stylesheet">
+  </head>
+  <body>
+    
+    <!-- nav bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="#"><h1 class="navbar-text"> <img src="img/logo.png" height="40px" width="180px;" /></h1></a>
+        </div>
+        <div id="navSessionInfo"></div>
+      </<div>
+    </nav>
+    
+    <!-- user display (table or tiles) -->
+    <div id="wrapper" class="container-fluid well table-responsive"></div>
+    <button type="button" id="bToggleAgentOverview" class="btn btn-primary" style="visibility: hidden;">Toggle Yesterday's / Today's Top 10</button>
+    <div id="agentOverview" class="panel panel-default"></div>
+    
+    <!-- HTML for Switch Card Modal -->
+    <div class="modal fade" id="switchCardModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content modal-sm">
+          <div class="modal-header">
+            <h4 class="modal-title">Switch Card</h4>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                Are you sure you want to switch out this card?
+              </div>
+              <div class="row">
+                <button id="bSwitchCard" type="button" class="col-xs-4" value="">Switch</button>
+                <button id="bSwitchCardCancel" type="button" class="col-xs-4">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- HTML for Scoring Hands Modal -->
+    <div class="modal fade" id="scoringHandsModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Scoring Hands Chart</h4>
+          </div>
+          <div class="modal-body">
+            <div class="well well-sm">
+              <strong>1. High Card</strong><strong style="float: right;">Rewards 0 Chips</strong>
+              <p>When you haven't made any of the hands above, the highest card plays.
+                In the example below, the jack plays as the highest card.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">J</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">6</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">8</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">2</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>2. Pair</strong><strong style="float: right;">Rewards 1 Chip</strong>
+              <p>Two cards of the same number.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">2</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">J</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>3. Two Pairs</strong><strong style="float: right;">Rewards 2 Chips</strong>
+              <p>Two different pairs.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">A</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">A</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">10</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">8</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">8</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>4. Three of a Kind</strong><strong style="float: right;">Rewards 3 Chips</strong>
+              <p>Three cards of the same number.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">4</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">K</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>5. Straight</strong><strong style="float: right;">Rewards 5 Chips</strong>
+              <p>Five cards in a sequence, but not of the same suit.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">6</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">4</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">3</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">2</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>6. Flush</strong><strong style="float: right;">Rewards 7 Chips</strong>
+              <p>Any five cards of the same suit, but not in a sequence.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">10</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">7</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">2</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">J</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>7. Full House</strong><strong style="float: right;">Rewards 10 Chips</strong>
+              <p>Three of a kind with a pair.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">Q</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">Q</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">7</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">7</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">7</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>8. Four of a Kind</strong><strong style="float: right;">Rewards 13 Chips</strong>
+              <p>Four cards of the same number. </p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">3</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">3</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">3</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">3</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">J</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>9. Straight Flush</strong><strong style="float: right;">Rewards 16 Chips</strong>
+              <p>Five cards in a sequence, all in the same suit. </p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">9</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">8</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">7</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">6</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>10. Five of a Kind</strong><strong style="float: right;">Rewards 20 Chips</strong>
+              <p>All five cards of the same number. </p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Clubs" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Diamonds" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">5</p>
+                          <p class="suit-Spades" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div> 
+            </div>
+            <div class="well well-sm">
+              <strong>11. Royal Flush</strong><strong style="float: right;">Rewards 25 Chips</strong>
+              <p>A, K, Q, J, 10, all the same suit.</p>
+              <div style="background-image: url('img/bg.jpg'); height: 95px;">
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">A</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">K</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">Q</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">J</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                      <div class="card" style="height: 75px; width: 60px; margin-top: 10px;">
+                          <p style="font: 35px Georgia, Times New Roman, serif;">10</p>
+                          <p class="suit-Hearts" style="font-size: 35px; margin-top: -5px;"></p>
+                      </div>
+                  </div>
+              </div>  
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <span class="col-xs-9"></span>
+              <button id="bScoringHandsClose" type="button" class="col-xs-2">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HTML for General Tutorial Modal -->
+    <div class="modal fade" id="generalTutorialModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">How Does cXp Poker work</h4>
+          </div>
+          <div id="generalTutorialModalBody" class="modal-body">
+            <p>Play it right!</p>
+          <div class="modal-footer">
+            <div class="row">
+              <span class="col-xs-9"></span>
+              <button id="bgeneralTutorialClose" type="button" class="col-xs-2">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Javascript -->
+    <script src="lib/jQuery-2.2.4.min.js"></script>
+    <script src="lib/bootstrap-3.3.6/js/bootstrap-3.3.6.min.js"></script>
+    <script src="sortComparators.js"></script>
+    <script src="handComparators.js"></script>
+    <script src="cardsFuncs.v2.js"></script>
+  </body>
+</html>

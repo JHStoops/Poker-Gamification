@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/png" href="logo.ico">
+        <link href="styles.css" rel="stylesheet" />
+        <link href="lib/bootstrap-3.3.6/css/bootstrap-3.3.6.min.css" rel="stylesheet">
+    </head>
+    <body>
+
+<!-- wfm.cxpxe.net/Poker/TodaysHands.html?site=PRV -->
+        <div id='agentOverview'></div>
+
+        <!-- Javascript -->
+        <script src="lib/jQuery-2.2.4.min.js"></script>
+        <script src="lib/bootstrap-3.3.6/js/bootstrap-3.3.6.min.js"></script>
+        <script src="sortComparators.js"></script>
+        <script src="handComparators.js"></script>
+        <script>
+            users=[];
+            $(document).ready(function(){
+                var site = document.location.href.substr(document.location.href.indexOf('?')+6);
+                $.ajax({
+                    url: `http://wfm.cxpxe.net:3000/api/v1/users/${site}`, 
+                    method: 'PATCH',   
+                    data: {client: "Aetna"},
+                    async: false,
+                    success: function(agents) {
+                        let hand = [];
+                        $.ajax({
+                            url: `http://wfm.cxpxe.net:3000/api/v1/cards`, 
+                            method: 'GET',
+                            async: false,
+                            success: function(_cards) {
+                                //Push cards into their respective agents' hands
+                                for(let agent of agents) agent.cards = [];
+                                for (let card of _cards) {
+                                    for (let agent of agents) {
+                                        if (agent.cc_userid != card.own) continue;
+                                        agent.cards.push(card);
+                                        break;
+                                    }
+                                }
+
+                                //Reorder the sortedUsers array to prepare for agent Overview
+                                users = agents;
+                                localStorage.setItem('sortedType', 'cardCount');
+                                users.sort(sortPrimary).reverse();
+                                users = users.slice(0, 10);
+
+                                //Now generate HTML for Agent overview
+                                let pokerHands = [];
+                                let counter = 0;
+                                pokerHands.push(`<div class="panel-heading text-center"><h1>Today's Top 10 Hands</h1></div><div class="panel-body">`);
+                                for (let user of users){
+                                    if (user.role === "agent" && user.cards.length > 0){
+                                        pokerHands.push(`<span class="col-xs-12 col-sm-6"><div class="row"><h4>${++counter}. ${user.fname} ${user.lname}, YTD Chips: ${Number(user.YTD_chips).toFixed(2)} </h4></div><div class="row">`);
+                                        for (let card of user.cards) pokerHands.push(`<img title="${card.lead}" class="col-xs-2" src="img/backOfCard.png">`);
+                                        pokerHands.push('</div></span>');
+                                    }
+                                }
+                                
+                                if (counter === 0) $('#agentOverview').html('<h1 align="center">Today\'s Top 10 Hands</h1><p align="center">No cards yet for today</p>');
+                                else {
+                                    pokerHands.push('</div>');
+                                    $('#agentOverview').html(pokerHands.join(''));
+                                }
+                            }// End of Success
+                        }); //End of ajax call
+                    }// End of for loop
+                }); //End of ajax call
+            });
+        </script>
+    </body>
+</html>
